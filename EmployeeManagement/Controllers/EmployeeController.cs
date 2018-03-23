@@ -218,15 +218,17 @@ namespace EmployeeManagement.Controllers
         {
             if (Session["Role"] != null && Session["Login"] != null && Session["Login"].ToString() == "1")
             {
-                if (Session["Role"].ToString().Equals("GuestUser"))
-                {
-                    return RedirectToAction("Index");
-                }
-                if (id == null)
+               if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 EmployeeMaster employeeMaster = db.EmployeeMasters.Find(id);
+                if (Session["Role"].ToString().Equals("GuestUser") && !Session["UserName"].ToString().Equals(employeeMaster.Email))
+
+                {
+                    return RedirectToAction("Index");
+                }
+               
                 if (employeeMaster == null)
                 {
                     return HttpNotFound();
@@ -311,15 +313,15 @@ namespace EmployeeManagement.Controllers
         {
             if (Session["Role"] != null && Session["Login"] != null && Session["Login"].ToString() == "1")
             {
-                if (Session["Role"].ToString().Equals("GuestUser"))
-                {
-                    return RedirectToAction("Index");
-                }
-                if (id == null)
+                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 EmployeeMaster employeeMaster = db.EmployeeMasters.Find(id);
+                if (Session["Role"].ToString().Equals("GuestUser") && !Session["UserName"].ToString().Equals(employeeMaster.Email))
+{
+                    return RedirectToAction("Index");
+                }
                 if (employeeMaster == null)
                 {
                     return HttpNotFound();
