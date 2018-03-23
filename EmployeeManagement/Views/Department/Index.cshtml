@@ -1,0 +1,54 @@
+﻿@model IEnumerable<EmployeeManagement.DepartmentMaster>
+
+@{
+	ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+	@if (Session["Role"].ToString().Equals("AdminUser"))
+	{
+		@Html.ActionLink("Create New", "Create")
+	}
+	</p>
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Department_Name)
+		</th>
+		@if (Session["Role"].ToString().Equals("AdminUser"))
+		{
+			<th>Action</th>
+		}
+		@if (Session["Role"].ToString().Equals("GuestUser"))
+		{
+			<th>Action</th>
+		}
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Department_Name)
+			</td>
+			@if (Session["Role"].ToString().Equals("AdminUser"))
+			{
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.Department_Id }) |
+					@Html.ActionLink("Details", "Details", new { id = item.Department_Id }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.Department_Id })
+				</td>
+			}
+			@if (Session["Role"].ToString().Equals("GuestUser"))
+			{
+				<td>
+					@Html.ActionLink("Details", "Details", new { id = item.Department_Id })
+				</td>
+			}
+
+		</tr>
+	}
+
+</table>

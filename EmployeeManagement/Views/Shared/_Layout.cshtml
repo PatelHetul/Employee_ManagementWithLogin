@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - Employee Management</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				@Html.ActionLink("Employee Management", "Index", "Department", new { area = "" }, new { @class = "navbar-brand" })
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li>@Html.ActionLink("Department", "Index", "Department")</li>
+					<li>@Html.ActionLink("Employee", "Index", "Employee")</li>
+					<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+				</ul>
+			@*	@Html.Partial("_LoginPartial")*@
+
+
+				@if (Session["UserName"] != null && Session["Login"] != null && Session["Login"].ToString() == "1")
+				{
+					using (Html.BeginForm("LogOut", "Register", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+					{
+						@Html.AntiForgeryToken()
+
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								@Html.ActionLink("Hello " + Session["UserName"] + "!", "LogOut", "Register", routeValues: null, htmlAttributes: new { title = "Manage" })
+							</li>
+							<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+						</ul>
+					}
+				}
+				else
+				{
+					<ul class="nav navbar-nav navbar-right">
+						<li>@Html.ActionLink("Register", "Register", "Register", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+						<li>@Html.ActionLink("Log in", "LogIn", "Register", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+					</ul>
+				}
+
+			</div>
+		</div>
+	</div>
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year -Employee Management</p>
+		</footer>
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
+</body>
+</html>

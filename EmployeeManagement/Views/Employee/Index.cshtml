@@ -1,0 +1,117 @@
+﻿@*@model IEnumerable<EmployeeManagement.EmployeeMaster>*@
+@model PagedList.IPagedList<EmployeeManagement.EmployeeMaster>
+
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+	ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+	@if (Session["Role"].ToString().Equals("AdminUser"))
+	{
+		@Html.ActionLink("Create New", "Create")
+	}
+</p>
+
+
+@using (Html.BeginForm("Index", "Employee", FormMethod.Get))
+{
+	<p>
+		Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+		<input type="submit" value="Search" />
+	</p>
+
+}
+<table class="table">
+	<tr>
+		<th>
+			@*@Html.DisplayNameFor(model => model.Employee_Name)*@
+			@Html.ActionLink("Employee Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+
+		</th>
+		<th>
+			@*@Html.DisplayNameFor(model => model.JoiningDate)*@
+			@Html.ActionLink("JoiningDate", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+		</th>
+		<th>
+			Address
+			@*@Html.DisplayNameFor(model => model.Address)*@
+		</th>
+		<th>
+			DepartMent
+			@*@Html.DisplayNameFor(model => model.DepartmentMaster.Department_Name)*@
+		</th>
+		<th>
+			Email
+			@*@Html.DisplayNameFor(model => model.Email)*@
+		</th>
+		<th>
+			Mobile No
+			@*@Html.DisplayNameFor(model => model.MobileNo)*@
+		</th>
+		<th>
+			<b>Image</b>
+		</th>
+		@if (Session["Role"].ToString().Equals("AdminUser"))
+		{
+			<th>Action</th>
+		}
+		@if (Session["Role"].ToString().Equals("GuestUser"))
+		{
+			<th>Action</th>
+		}
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Employee_Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.JoiningDate)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Address)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.DepartmentMaster.Department_Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Email)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.MobileNo)
+			</td>
+			<td>
+				<img src="/Employee/RetrieveImage/@item.Employee_Id" alt="" height=100 width=200 />
+			</td>
+			@if (Session["Role"].ToString().Equals("AdminUser"))
+			{
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.Employee_Id }) |
+					@Html.ActionLink("Details", "Details", new { id = item.Employee_Id }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.Employee_Id })
+				</td>
+			}
+			@if (Session["Role"].ToString().Equals("GuestUser"))
+			{
+				<td>
+					@Html.ActionLink("Details", "Details", new { id = item.Employee_Id })
+				</td>
+			}
+		</tr>
+	}
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+	new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

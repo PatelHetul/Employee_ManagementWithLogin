@@ -1,0 +1,102 @@
+﻿@model EmployeeManagement.EmployeeMaster
+
+@{
+	ViewBag.Title = "Edit";
+}
+
+<script src="~/Content/ckeditor.js"></script>
+<script src="~/Content/jquery.js"></script>
+<h2>Edit</h2>
+<script type="text/javascript">
+	function fileCheck(obj) {
+		var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+		if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+			alert("Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.");
+			//var img = document.getElementById("ImageData").value;
+			//img.val = null;
+		}
+	}
+</script>
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>EmployeeMaster</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.Employee_Id)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Employee_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Employee_Name, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Employee_Name, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Department, "Department", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("Department", null, htmlAttributes: new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.JoiningDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.JoiningDate, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@*<img src="/Employee/RetrieveImage/@ViewBag.id" alt="" height=100 width=200 />*@
+				<input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+				@Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
