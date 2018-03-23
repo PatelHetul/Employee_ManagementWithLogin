@@ -101,9 +101,22 @@
 			}
 			@if (Session["Role"].ToString().Equals("GuestUser"))
 			{
-				<td>
-					@Html.ActionLink("Details", "Details", new { id = item.Employee_Id })
-				</td>
+				if (Session["UserName"].ToString().Equals(item.Email))
+				{
+					<td>
+						@Html.ActionLink("Edit", "Edit", new { id = item.Employee_Id }) |
+						@Html.ActionLink("Details", "Details", new { id = item.Employee_Id }) |
+						@Html.ActionLink("Delete", "Delete", new { id = item.Employee_Id })
+					</td>
+				}
+
+				if (!Session["UserName"].ToString().Equals(item.Email))
+				{
+
+					<td>
+						@Html.ActionLink("Details", "Details", new { id = item.Employee_Id })
+					</td>
+				}
 			}
 		</tr>
 	}
